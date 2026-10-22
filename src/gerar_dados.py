@@ -24,7 +24,6 @@ def gerar(caminho: Path, linhas: int, seed: int) -> None:
                 ip = rng.choice(ips_quentes)
             else:
                 ip = f"{rng.randint(1, 223)}.{rng.randint(0, 255)}.{rng.randint(0, 255)}.{rng.randint(1, 254)}" 
-255)}.{rng.randint(1, 254)}"
             ts = inicio + timedelta(seconds=i * 86400 / linhas)
             endpoint = rng.choice(ENDPOINTS).format(rng.randint(1, 20000))
             status = rng.choice(STATUS)

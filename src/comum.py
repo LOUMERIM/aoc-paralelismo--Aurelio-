@@ -33,14 +33,28 @@ def processar_linha(linha: str, acc: dict) -> None:
         acc["invalidas"] += 1
         return
     # TODO: extrair os campos de `m` e atualizar os quatro Counters.
-    raise NotImplementedError
+    
+    acc["por_status"][m["status"]] += 1
+    acc["por_ip"][m["ip"]] += 1
+    hora = datetime.strptime(m["data"], FORMATO_DATA).hour
+    acc["por_hora"][f"{hora:02d}"] += 1
+    endpoint = m["endpoint"].split("?", 1)[0]
+    acc["bytes_por_endpoint"][endpoint] += int(m["bytes"])
 
 
 def combinar(parciais: list[dict]) -> dict:
     """Agrega os resultados parciais devolvidos pelos workers em um só."""
     total = resultado_vazio()
     # TODO: somar os Counters e os inteiros de cada parcial em `total`.
-    raise NotImplementedError
+    
+    for p in parciais:
+        total["por_status"].update(p["por_status"])
+        total["bytes_por_endpoint"].update(p["bytes_por_endpoint"])
+        total["por_ip"].update(p["por_ip"])
+        total["por_hora"].update(p["por_hora"])
+        total["linhas"] += p["linhas"]
+        total["invalidas"] += p["invalidas"]
+    return total
 
 def resumo(resultado: dict) -> dict:
     """Converte o resultado em algo serializável em JSON (para validar.py)."""

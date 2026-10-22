@@ -8,7 +8,9 @@ from comum import resultado_vazio, processar_linha, resumo
 def analisar(caminho: str) -> dict:
     acc = resultado_vazio()
     # TODO: abrir o arquivo e chamar processar_linha para cada linha.
-    raise NotImplementedError
+    with open(caminho, "rb") as f:
+        for linha in f:
+            processar_linha(linha.decode("ascii", errors="replace"), acc)
     return acc
 
 if __name__ == "__main__":
