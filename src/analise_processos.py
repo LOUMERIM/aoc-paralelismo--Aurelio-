@@ -13,7 +13,10 @@ def analisar(caminho: str, workers: int) -> dict:
     # TODO: igual à versão com threads, trocando o executor.
     # Atenção: o que é enviado aos processos (argumentos) e o que volta
     # (resultado parcial) precisa ser serializável com pickle.
-    raise NotImplementedError
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        futuros = [executor.submit(processar_bloco, caminho, inicio, fim) for inicio, fim in blocos]
+        parciais = [f.result() for f in futuros]
+    return combinar(parciais)
 
 if __name__ == "__main__":
     # O bloco `if __name__ == "__main__"` é OBRIGATÓRIO com processos no

@@ -11,6 +11,25 @@ Como executar:
     Observação: os scripts importam comum como módulo local, por isso o cd src. Alternativa: executar
     com PYTHONPATH=src.
 
+## Resultados
+Tempos em segundos. Dados completos em
+[results/tabela.md](results/tabela.md) e [results/tempos.csv](results/tempos.csv).
+"—" = ainda não medido. Cada valor é de uma única execução (sem desvio padrão).
+
+| Versão | Nº de Workers | Tempo Médio | Desvio padrão (s) | Speedup(T_seq / T_par) | Eficiencia(Speedup / workers) |
+|:---------|:------:|:--------:|:--------:|:--------:|--------:|
+| Sequencial | 1  | 12,73     | —     | 1,00     | 1,00     |
+| Threads | 1  | —     | —     | —     | —     |
+| Threads | 2  | —     | —     | —     | —     |
+| Threads | 4  | 21,70     | —     | 0,59     | 0,15     |
+| Threads | 8  | —     | —     | —     | —     |
+| Threads | cpu_count = ?  | —     | —     | —     | —     |
+| Processos | 1  | 14,96     | —     | 0,85     | 0,85     |
+| Processos | 2  | 8,03     | —     | 1,59     | 0,79     |
+| Processos | 4  | 4,69     | —     | 2,72     | 0,68     |
+| Processos | 8  | —     | —     | —     | —     |
+| Processos | cpu_count = ?  | —     | —     | —     | —     |
+
 ## Perguntas de análise (responder no README)
 1. A versão com threads ficou mais rápida que a sequencial? Explique o que é o GIL e por que ele
 impede o ganho em tarefas CPU-bound. Em que tipo de tarefa as threads em Python ajudam?

@@ -1,0 +1,6 @@
+versao,workers,tempo_medio_s,desvio_padrao_s,speedup,eficiencia
+sequencial,1,12.7300,,1.000,1.000
+threads,4,21.7000,,0.587,0.147
+processos,1,14.9600,,0.851,0.851
+processos,2,8.0270,,1.586,0.793
+processos,4,4.6870,,2.716,0.679
