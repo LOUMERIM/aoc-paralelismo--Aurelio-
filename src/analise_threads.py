@@ -13,7 +13,10 @@ def analisar(caminho: str, workers: int) -> dict:
     blocos = dividir_em_blocos(caminho, workers)
     # TODO: criar um ThreadPoolExecutor com `workers` threads, submeter processar_bloco(caminho, inicio, fim) para cada bloco, recolher os
     # resultados parciais e devolver combinar(parciais). Dica: executor.map ou uma lista de futures + future.result().
-    raise NotImplementedError
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futuros = [executor.submit(processar_bloco, caminho, inicio, fim) for inicio, fim in blocos]
+        parciais = [f.result() for f in futuros]
+    return combinar(parciais)
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
