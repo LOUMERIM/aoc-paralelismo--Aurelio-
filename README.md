@@ -83,14 +83,14 @@ físicos? Relacione com hyper-threading e com o conceito de escalabilidade forte
    O processador tem 4 núcleos físicos e 8 CPUs lógicas por hyper-threading (2 threads por núcleo). As duas threads de um núcleo dividem as mesmas unidades de execução e as caches L1 e L2, então dois processos CPU-bound no mesmo núcleo físico rendem muito menos que dois núcleos de verdade. O hyper-threading só ajuda a esconder esperas, e aqui a tarefa quase não espera, então os 4 workers extras trouxeram só cerca de 2% de ganho.
    Isso ilustra a escalabilidade forte, pois com o tamanho do problema fixo (1 milhão de linhas), aumentar o número de processadores deveria reduzir o tempo proporcionalmente, mas o ganho satura. Os limites são a fração sequencial (Lei de Amdahl) e os recursos físicos disponíveis.
 
-1. Qual fração paralelizável f você estimou? Segundo a Lei de Amdahl, qual seria o speedup
+4. Qual fração paralelizável f você estimou? Segundo a Lei de Amdahl, qual seria o speedup
 máximo com infinitos núcleos? Que parte do seu programa é inerentemente sequencial?
 
    **Resposta:** Estimei f ≈ 0,87, a média de f = 0,846 (p = 2) e f = 0,885 (p = 4), calculados por `f = (1/S − 1) / (1/p − 1)`. O valor de p = 8 (0,765) foi descartado por estar distorcido pelo hyper-threading.
    Pela Lei de Amdahl, o speedup máximo com infinitos núcleos é `1 / (1 − f)`, ou seja, cerca de **7,5X**. Esse é um teto que os 4 núcleos físicos desta máquina nem chegam perto de atingir.
    A parte inerentemente sequencial (cerca de 13% do tempo, com os overheads incluídos) é o que roda só no processo principal: a divisão do arquivo em blocos (`dividir_em_blocos`), a criação do pool de processos, o recebimento e o pickle dos resultados parciais, a agregação em `combinar()` e a montagem do resumo e da saída final.
 
-1. (Opcional) Se o arquivo tivesse 10 milhões de linhas, você esperaria eficiência maior ou menor
+5. (Opcional) Se o arquivo tivesse 10 milhões de linhas, você esperaria eficiência maior ou menor
 com 4 processos? Relacione com escalabilidade fraca.
 
    **Resposta:** Esperaria eficiência **maior**. Os custos fixos (criação dos processos, divisão em blocos, pickle dos resultados parciais e agregação) não crescem na mesma proporção que o número de linhas, porque dependem mais do número de chaves distintas nos `Counter` do que do total de linhas. Já a parte paralela (regex e `strptime` por linha) cresce cerca de 10 vezes. Assim, a fração paralelizável f aumenta e o speedup com 4 processos chega mais perto de 4.
