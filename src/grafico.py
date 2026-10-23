@@ -24,7 +24,8 @@ for nome, serie in dados.items():
 label=nome.capitalize())
 if a.f is not None:
     # TODO: traçar a curva de Amdahl S(p) = 1 / ((1 - f) + f / p) para p = 1..max_w
-    pass
+    ps = list(range(1, max_w + 1))
+    ax.plot(ps, [1 / ((1 - a.f) + a.f / p) for p in ps], "r--", label=f"Amdahl (f = {a.f})")
 ax.set_xlabel("Número de workers (p)")
 ax.set_ylabel("Speedup")
 ax.set_title("Speedup × workers — análise de 1 milhão de linhas de log")
