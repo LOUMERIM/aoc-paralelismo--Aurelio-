@@ -14,7 +14,9 @@ def medir(func, repeticoes: int, *args) -> tuple[float, float]:
     tempos = []
     for _ in range(repeticoes):
         # TODO: medir com time.perf_counter() antes e depois de func(*args)
-        raise NotImplementedError
+        t0 = time.perf_counter()
+        func(*args)
+        tempos.append(time.perf_counter() - t0)
     return statistics.mean(tempos), statistics.stdev(tempos)
 
 if __name__ == "__main__":
@@ -30,7 +32,8 @@ if __name__ == "__main__":
     for nome, mod in [("threads", analise_threads), ("processos", analise_processos)]:
         for w in workers:
             # TODO: medir mod.analisar com w workers e acrescentar a linha
-            raise NotImplementedError
+            t, d = medir(mod.analisar, a.repeticoes, a.caminho, w)
+            linhas.append([nome, w, t, d])
 
     Path("results").mkdir(exist_ok=True)
     with open("results/tempos.csv", "w", newline="") as f:
